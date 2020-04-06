@@ -1,27 +1,33 @@
 package CW2;
 
-import java.util.*;
+import org.w3c.dom.Node;
 
-public class Trie
-{
+import java.util.*;
+import java.lang.*;
+
+public class Trie {
     TrieNode root = new TrieNode();
 
-    //adds a key to trie and retruns true if the addition was successful i.e. returns false if key already exist in the Trie
+
+    //adds a key to trie and returns true if the addition was successful i.e. returns false if key already exist in the Trie
     public boolean add(String key)
     {
         TrieNode rootTemp = root;
-        for(int i = 0; i < key.length(); i++)
+        for (int i = 0; i < key.length(); i++)
         {
             TrieNode nextNode = rootTemp.getOffSpring(key.charAt(i));
             if (nextNode == null)
             {
                 nextNode = TrieNode.makeNode(key.charAt(i));
-                rootTemp.addNode(nextNode);
+                //check this
+                rootTemp.toCharArray(nextNode);
             }
             rootTemp = nextNode;
         }
         rootTemp.isEnd = true;
+        return rootTemp.isEnd;
     }
+
 
     public boolean contains(String key)
     {
@@ -71,10 +77,29 @@ public class Trie
         return buildString.toString();
     }
 
+    //returns a string representing a pre order depth first traversal
+    // make it recursive
     public String outputDepthFirstSearch()
     {
-        return null;
-    }
+        if (root == null)
+            return null;
+        Stack<TrieNode> s = new Stack<TrieNode>();
+        String word = "";
+        s.push(root);
+        TrieNode tempTN = root;
+        while (s.isEmpty() == false) {
+            // peek() used to retrieve first element of the s
+            tempTN = s.peek();
+            for (int i = 1; i < tempTN.offSpring.length; i++)
+            {
+                if (tempTN.offSpring[i] == null)
+                    s.push(tempTN.offSpring[i]);
+                    word = word + (char)(i + 'a');
+                }
+            }return word;
+        }
+
+
 
     public Trie getSubTrie (String prefix)
     {
@@ -84,6 +109,20 @@ public class Trie
     public List getAllWords()
     {
         return null;
+    }
+
+    public static void main(String[] args) {
+        Trie newTrie = new Trie();
+        newTrie.add("cheers");
+        newTrie.add("cheese");
+        newTrie.add("chat");
+        newTrie.add("cat");
+        newTrie.add("bat");
+
+        System.out.println(newTrie.outputBreadthFirstSearch());
+        System.out.println(newTrie.outputDepthFirstSearch());
+        // no errors for bfs
+        //check errors
     }
 
 }
