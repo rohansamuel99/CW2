@@ -8,6 +8,8 @@ public class TrieNode
     public char charValueLetter;
     // variable to check if this is the last character in the string
     public boolean isEnd;
+    // variable to check whether the node has been node
+    public boolean visitedNode;
     //creating an array of fixed size 26
     public TrieNode[] offSpring;
 
@@ -17,6 +19,7 @@ public class TrieNode
         this.offSpring = new TrieNode[26];
         //sets both the booleans to false
         this.isEnd = false;
+        this.visitedNode = false;
         // iterates through the length of the array and sets all the elements to null
         for(int i = 0; i < offSpring.length; i++)
             offSpring[i] = null;
@@ -49,6 +52,8 @@ public class TrieNode
         return null;
     }
 
+    // gets character from next node and converts it to an integer and then removes 97(cos ascii for a)
+    // basically turning a to z to 0 to 25 and then storing next at that index
     public void toCharArray(TrieNode nextNode)
     {
         int node = (int)nextNode.charValueLetter - 97;

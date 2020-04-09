@@ -77,37 +77,59 @@ public class Trie {
         return buildString.toString();
     }
 
-    //returns a string representing a pre order depth first traversal
+    //returns a string representing a pre-order depth first traversal
     // make it recursive
     public String outputDepthFirstSearch()
     {
         if (root == null)
             return null;
+        // create a stack for DFS i.e. which nodes to visit
         Stack<TrieNode> s = new Stack<TrieNode>();
+        Stack<Integer> sInt = new Stack<>();
         String word = "";
+        // push the current node to top
         s.push(root);
         TrieNode tempTN = root;
-        while (s.isEmpty() == false) {
-            // peek() used to retrieve first element of the s
-            tempTN = s.peek();
-            for (int i = 1; i < tempTN.offSpring.length; i++)
+        while (!s.isEmpty())
+        {
+            tempTN = s.pop();
+            if(!sInt.isEmpty())
+                word = word + (char)(sInt.pop() + 'a');
+            for (int i = tempTN.offSpring.length - 1; i >= 0; i--)
             {
-                if (tempTN.offSpring[i] == null)
+                if (tempTN.offSpring[i] != null)
+                {
                     s.push(tempTN.offSpring[i]);
-                    word = word + (char)(i + 'a');
+                    sInt.push(i);
                 }
-            }return word;
+            }
         }
-
-
-
-    public Trie getSubTrie (String prefix)
-    {
-        return null;
+        return word;
     }
 
+
+    // returns a new Trie rooted at the prefix
+    public Trie getSubTrie (String prefix)
+    {
+        //create a new TrieNode
+        Trie subTrie = new Trie();
+        TrieNode tempTN = root;
+        for (int i = 0; i < prefix.length(); i++)
+        {
+            // same concept as toCharArray
+            int subTrieInt = (int)prefix.charAt(i) - 97;
+            if(tempTN == null)
+                return null;
+            subTrie.root = tempTN.getOffSpring(prefix.charAt(i));
+            tempTN = tempTN.offSpring[subTrieInt];
+        }
+        return subTrie;
+    }
+
+    // returns a list containing all words in the Trie
     public List getAllWords()
     {
+
         return null;
     }
 
@@ -121,6 +143,7 @@ public class Trie {
 
         System.out.println(newTrie.outputBreadthFirstSearch());
         System.out.println(newTrie.outputDepthFirstSearch());
+        System.out.println(newTrie.getSubTrie("ch"));
         // no errors for bfs
         //check errors
     }
