@@ -45,7 +45,7 @@ public class TrieNode
     {
         for(int i = 0; i < offSpring.length; i++)
         {
-            //make sure its not invalid or null and is equal to the the specific character, then adding updating each item in the array
+            //make sure its not invalid or null and is equal to the the specific character, then adding and updating each item in the array
             if (offSpring[i] != null && offSpring[i].charValueLetter == cOffSpring)
                 return offSpring[i];
         }
@@ -65,4 +65,5 @@ public class TrieNode
         return charValueLetter;
     }
 
+    //toString for getSubTrie
 }

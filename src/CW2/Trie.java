@@ -1,7 +1,5 @@
 package CW2;
 
-import org.w3c.dom.Node;
-
 import java.util.*;
 import java.lang.*;
 
@@ -15,11 +13,11 @@ public class Trie {
         TrieNode rootTemp = root;
         for (int i = 0; i < key.length(); i++)
         {
+            // charAt returns the character at the specified index
             TrieNode nextNode = rootTemp.getOffSpring(key.charAt(i));
             if (nextNode == null)
             {
                 nextNode = TrieNode.makeNode(key.charAt(i));
-                //check this
                 rootTemp.toCharArray(nextNode);
             }
             rootTemp = nextNode;
@@ -31,7 +29,6 @@ public class Trie {
 
     public boolean contains(String key)
     {
-        boolean keyFound;
         TrieNode rootTemp = root;
         if (rootTemp != null && rootTemp.isEnd )
             return true;
@@ -39,7 +36,7 @@ public class Trie {
         {
             TrieNode nodeNext = rootTemp.getOffSpring((key.charAt(i)));
             if (nodeNext == null)
-                return keyFound = false;
+                return false;
             else
             {
                 rootTemp = nodeNext;
@@ -71,7 +68,10 @@ public class Trie {
                 characterArrayList.add(currentNode.charValueLetter);
             }
         }
+        // StringBuilders is like an array of strings.
+        // creating a new stringbuilder of the size of characterArrayList
         StringBuilder buildString = new StringBuilder(characterArrayList.size());
+        //adding each character in characterArrayList to buildString
         for ( Character characterBFS : characterArrayList)
             buildString.append(characterBFS);
         return buildString.toString();
@@ -114,23 +114,45 @@ public class Trie {
         //create a new TrieNode
         Trie subTrie = new Trie();
         TrieNode tempTN = root;
+        if (" ".equals(prefix) || prefix.isEmpty())
+            return null;
         for (int i = 0; i < prefix.length(); i++)
         {
             // same concept as toCharArray
             int subTrieInt = (int)prefix.charAt(i) - 97;
-            if(tempTN == null)
+            if(tempTN.offSpring[subTrieInt] == null)
+            {
                 return null;
+            }
             subTrie.root = tempTN.getOffSpring(prefix.charAt(i));
             tempTN = tempTN.offSpring[subTrieInt];
         }
         return subTrie;
+        // searches letters in trie if yes creates a new trie
+        // assign root to characters of the prefix
     }
 
     // returns a list containing all words in the Trie
     public List getAllWords()
     {
+        List allWords = new ArrayList();
+        for (TrieNode getWords : root.offSpring )
+        {
+            if (getWords != null)
+                getAllWords(allWords, getWords.charValueLetter + "", getWords);
+        }
+        return allWords;
+    }
 
-        return null;
+    public void getAllWords(List allWords, String words, TrieNode getWords)
+    {
+        if(getWords.isEnd)
+            allWords.add(words);
+        for (TrieNode tempNode : getWords.offSpring)
+        {
+            if (tempNode != null)
+                getAllWords(allWords, words + tempNode.charValueLetter, tempNode);
+        }
     }
 
     public static void main(String[] args) {
@@ -143,7 +165,8 @@ public class Trie {
 
         System.out.println(newTrie.outputBreadthFirstSearch());
         System.out.println(newTrie.outputDepthFirstSearch());
-        System.out.println(newTrie.getSubTrie("ch"));
+        System.out.println(newTrie.getSubTrie("ch").getAllWords());
+        System.out.println(newTrie.getAllWords());
         // no errors for bfs
         //check errors
     }
