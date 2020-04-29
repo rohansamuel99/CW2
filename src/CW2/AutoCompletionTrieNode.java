@@ -1,8 +1,6 @@
 package CW2;
 
-import java.util.*;
-
-public class TrieNode
+public class AutoCompletionTrieNode
 {
     //the character that is stored inside the node
     public char charValueLetter;
@@ -11,12 +9,13 @@ public class TrieNode
     // variable to check whether the node has been node
     public boolean visitedNode;
     //creating an array of fixed size 26
-    public TrieNode[] offSpring;
+    public AutoCompletionTrieNode[] offSpring;
+    int frequency = 0;
 
-    public TrieNode()
+    public AutoCompletionTrieNode()
     {
         // initialize the array of fixed size 26
-        this.offSpring = new TrieNode[26];
+        this.offSpring = new AutoCompletionTrieNode[26];
         //sets both the booleans to false
         this.isEnd = false;
         this.visitedNode = false;
@@ -25,15 +24,15 @@ public class TrieNode
             offSpring[i] = null;
     }
 
-    public TrieNode(char c)
+    public AutoCompletionTrieNode(char c)
     {
         charValueLetter = c;
     }
 
-    public static TrieNode makeNode(char cNode)
+    public static AutoCompletionTrieNode makeNode(char cNode)
     {
         //create a new TrieNode
-        TrieNode newTrieN = new TrieNode();
+        AutoCompletionTrieNode newTrieN = new AutoCompletionTrieNode();
         newTrieN.isEnd = false;
         newTrieN.charValueLetter = cNode;
 
@@ -41,7 +40,7 @@ public class TrieNode
     }
 
     // getting the offSpring with the specific character
-    public TrieNode getOffSpring (char cOffSpring)
+    public AutoCompletionTrieNode getOffSpring (char cOffSpring)
     {
         for(int i = 0; i < offSpring.length; i++)
         {
@@ -54,7 +53,7 @@ public class TrieNode
 
     // gets character from next node and converts it to an integer and then removes 97(cos ascii for a)
     // basically turning a to z to 0 to 25 and then storing next at that index
-    public void toCharArray(TrieNode nextNode)
+    public void toCharArray(AutoCompletionTrieNode nextNode)
     {
         int node = (int)nextNode.charValueLetter - 97;
         offSpring[node] = nextNode;

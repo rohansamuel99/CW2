@@ -39,8 +39,7 @@ public class DictionaryFinder {
 
     public static void saveCollectionToFile(Collection<?> c,String file) throws IOException
     {
-        FileWriter fileWriter = new FileWriter(file);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
+        PrintWriter printWriter = new PrintWriter(file);
         for(Object w: c)
         {
             printWriter.println(w.toString());
@@ -50,29 +49,38 @@ public class DictionaryFinder {
 
     public void formDictionary() throws Exception
     {
-        wordRead = readWordsFromCSV("C:\\Users\\rohan\\IdeaProjects\\CW2\\src\\TextFiles\\lotr.csv");
+        // reading the words from lotr.csv into the arraylist, wordRead
+        wordRead = readWordsFromCSV
+            ("C:\\Users\\rohan\\IdeaProjects\\CW2\\src\\TextFiles\\lotr.csv");
+        // sort the wordRead alphabetically
         Collections.sort(wordRead);
+        // dictionaryFill is a new TreeMap
         dictionaryFill = new TreeMap();
 
+        //for each word in the arraylist, wordRead
         for(String word : wordRead)
         {
+            //if dictionaryFill contains the word then add 1 to the frequency of the word
             if(dictionaryFill.containsKey(word))
             {
                 dictionaryFill.put(word, dictionaryFill.get(word)+1);
             }
+            // else it leaves the frequency at 1
             else
             {
                 dictionaryFill.put(word, 1);
             }
         }
 
+        // for each key in the keySet of dictionaryFill, print out the word with its frequency
         for(String key : dictionaryFill.keySet())
             System.out.println(key + " : " + dictionaryFill.get(key));
     }
 
     public void saveToFile() throws IOException
     {
-        try (BufferedWriter writeToFile = new BufferedWriter(new FileWriter("C:\\Users\\rohan\\IdeaProjects\\CW2\\Output.txt")))
+        try (BufferedWriter writeToFile = new BufferedWriter(new FileWriter
+        ("C:\\Users\\rohan\\IdeaProjects\\CW2\\src\\TextFiles\\Output.txt")))
         {
             for (Map.Entry<String, Integer> entry : this.dictionaryFill.entrySet()) {
                 System.out.println("Word = " + entry.getKey() + ", Value = " + entry.getValue());
@@ -81,15 +89,12 @@ public class DictionaryFinder {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception
+    {
         DictionaryFinder df=new DictionaryFinder();
-        ArrayList<String> in=readWordsFromCSV("C:\\Users\\rohan\\IdeaProjects\\CW2\\src\\TextFiles\\lotr.csv");
-        //DO STUFF TO df HERE in countFrequencies
+        ArrayList<String> in=readWordsFromCSV
+        ("C:\\Users\\rohan\\IdeaProjects\\CW2\\src\\TextFiles\\lotr.csv");
         df.formDictionary();
         df.saveToFile();
-
-
-
     }
-
 }
